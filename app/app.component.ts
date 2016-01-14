@@ -2,14 +2,25 @@
  * Created by jerchoo on 7/1/16.
  */
 import {Component} from 'angular2/core';
-
-interface Hero {
-    id: number;
-    name: string;
-}
+import {Hero} from './hero';
+import {HeroDetailComponent} from './hero-detail.component';
 
 @Component({
     selector: 'my-app',
+    template: `
+    <h1>{{title}}</h1>
+    <h2>My Heroes</h2>
+    <ul class="heroes">
+      <li *ngFor="#hero of heroes"
+        [class.selected]="hero === selectedHero"
+        (click)="onSelect(hero)">
+        <span class="badge">{{hero.id}}</span> {{hero.name}}
+      </li>
+    </ul>
+
+        <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+    `,
+
     styles: [`
         .selected {
             background-color: #CFD8DC !important;
@@ -58,33 +69,16 @@ interface Hero {
             border-radius: 4px 0px 0px 4px;
          }
     `],
-    template: `
-        <h2>My heroes </h2>
-        <ul class="heroes"> <!--class.selected is Styling the selection-->
-        <li *ngFor="#hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-            <!--each hero goes here-->
-            <span class="badge">{{hero.id}}</span> {{hero.name}}
-        </li>
-        </ul>
-
-        <br>
-
-        <div *ngIf="selectedHero">
-        <h2>{{selectedHero.name}} details</h2>
-        <div><label for="id"> id: </label> {{selectedHero.id}}</div>
-        <div><label for="name">name:</label>
-            <input type="text" [(ngModel)]="selectedHero.name" placeholder="name">
-        </div>
-        </div>
-    `
+    directives: [HeroDetailComponent]
 })
 //The parenthesis identify the <li> element’s click event as the target. The expression to the right of the equal sign calls the AppComponent method, onSelect(), passing the local template variable hero as an argument. That’s the same hero variable we defined previously in the ngFor.
 
 export class AppComponent {
     public title = 'Tour of Heroes';
     public heroes = HEROES;
-    public selectedHero: Hero;
-    onSelect(hero: Hero) {
+    public selectedHero:Hero;
+
+    onSelect(hero:Hero) {
         this.selectedHero = hero;
     }
 }//this act of exporting turns the file into a module. The name of the file (without extension) is usually the name of the module
