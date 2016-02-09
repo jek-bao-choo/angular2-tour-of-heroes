@@ -1,6 +1,3 @@
-/**
- * Created by jerchoo on 7/1/16.
- */
 import {Component} from 'angular2/core';
 import {Hero} from './hero';
 import {HeroDetailComponent} from './hero-detail.component';
